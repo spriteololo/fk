@@ -110,7 +110,7 @@ function looper() {
             stopLoop();
             var promise = new Promise(function (resolve) {
                 jQuery.get('https://5kings.ru/bag_type_17.chtml', function (response) {
-                    var re = new RegExp('<img width="75" height="50" src="https:\/\/5kings\.ru\/resources\/upload\/1_2404\.gif" title="Кирка рудокопа">.+\\n.+\\n.+\\n<form method=post><input type=hidden name=actUser-Wear value=(\\d+)>', 'gm');
+                    var re = new RegExp('<img width="75" height="50" src="https:\/\/5kings\.ru\/resources\/upload\/1_2404\.gif" title="Кирка рудокопа">.+\n.+\n.+\n<form method=post><input type=hidden name=actUser-Wear value=(\\d+)', 'gm');
                     var match = re.exec(response);
                     if (match && match[1]) {
                         var itemId = +match[1];
