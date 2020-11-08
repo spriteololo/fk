@@ -106,7 +106,7 @@ function looper() {
     log.v("timerCountDown = " + timerCountDown )
     if(timerCountDown == "-1") { // Timer is off
         log.i("response = " + overlayResponse + ", currentState = " + currentState);
-        if(overlayResponse == 'Вы должны иметь в руках "Кирка рудокопа" или "Золотая кирка рудокопа"') {
+        if(overlayResponse == 'Вы должны иметь в руках "Золотая кирка рудокопа" или "Кирка рудокопа"') {
             stopLoop();
             var promise = new Promise(function (resolve) {
                 jQuery.get('https://5kings.ru/bag_type_17.chtml', function (response) {
