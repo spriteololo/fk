@@ -1,5 +1,5 @@
 (function initMod(){
-    if (top.frames["d_act"].global_data != undefined && top.frames["d_act"].global_data.my_group != undefined) {
+    if (top.frames["d_act"].global_dataHz != undefined && top.frames["d_act"].global_dataHz.my_group != undefined) {
         startNail()
     } else {
         console.log("try to to init")
@@ -142,12 +142,12 @@ var ResEndText = "";
 var TimeShiftTxt = "";
 var TimeShiftShow = false;
 var timeshift = 0;
-var myPers = actIframeWin.global_data.my_group.sostav.leader;
+var myPers = actIframeWin.global_dataHz.my_group.sostav.leader;
 var my_id = +myPers.id;
 
-var cl = actIframeWin.Client;
+var cl = actIframeWin.ClientHz;
 
-var my_gr_id = +actIframeWin.global_data.my_group.sub_type;
+var my_gr_id = +actIframeWin.global_dataHz.my_group.sub_type;
 var ChangeNapr = 0;
 var dobytoRes = 0;
 var ResEnd = 0;
@@ -630,7 +630,7 @@ function myTimer() {
     if (cl.selected > 0) {
         jQueryPers("#selpos").val(cl.posx + ":" + cl.posy);
     }
-    var GD = actIframeWin.global_data;
+    var GD = actIframeWin.global_dataHz;
     var myGroup = GD.my_group;
     if (1 === +myGroup.stay && autoGo) {
         attemptsToChangePosition++;
@@ -784,9 +784,9 @@ function getDestinationPoint() {
         y: +destinationPoints[1]
     };
 }
-function sendWSMessage(message, description) {
+function sendWSMessage(message, description, f) {
     console.log(description, message);
-    cl.send(message);
+    cl.sendHz(message);
 }
 
 /// ***************************** ///
@@ -852,8 +852,8 @@ function needGroupsUpdate() {
     }
 
     // Пересобираем группы тех, кто в радиусе видимости
-    var groupsIndexes = actIframeWin.global_data.groups_index,
-        groups = actIframeWin.global_data.groups;
+    var groupsIndexes = actIframeWin.global_dataHz.groups_index,
+        groups = actIframeWin.global_dataHz.groups;
     for (i = 0, len = groupsIndexes.length; i < len; i++) {
         if (!isValidGroup(groups, groupsIndexes[i])) {
             // Это ошибочная группа, её не надо добавлять
@@ -893,8 +893,8 @@ function needGroupsUpdate() {
     }
 
     // Перерисовка, если наш персонаж двигается
-    var myGroupX = +actIframeWin.global_data.my_group.posx;
-    var myGroupY = +actIframeWin.global_data.my_group.posy;
+    var myGroupX = +actIframeWin.global_dataHz.my_group.posx;
+    var myGroupY = +actIframeWin.global_dataHz.my_group.posy;
     if (lastMyGroupX !== myGroupX || lastMyGroupY !== myGroupY) {
         lastMyGroupX = myGroupX;
         lastMyGroupY = myGroupY;
@@ -935,8 +935,8 @@ function locatorCheck() {
     }
 
     var i;
-    var myGroupX = +actIframeWin.global_data.my_group.posx;
-    var myGroupY = +actIframeWin.global_data.my_group.posy;
+    var myGroupX = +actIframeWin.global_dataHz.my_group.posx;
+    var myGroupY = +actIframeWin.global_dataHz.my_group.posy;
     var group, otherGroupX, otherGroupY, diffX, diffY, distance, className;
     var classes = {}, classObj, foundGroups = [];
     for (i = 0; i < len; i++) {
@@ -1114,13 +1114,13 @@ function uzhas(mgr) {
 /// *************************** ///
 
 function getPersLocationHtml() {
-    var mg = actIframeWin.global_data.my_group;
+    var mg = actIframeWin.global_dataHz.my_group;
     return "(" + mg.posx +":" + mg.posy + ", " + naprMap[mg.napr] + ")";
 }
 
 function resVybor(resInCl) {
-    var myGrPosX = actIframeWin.global_data.my_group.posx,
-        myGrPosY = actIframeWin.global_data.my_group.posy;
+    var myGrPosX = actIframeWin.global_dataHz.my_group.posx,
+        myGrPosY = actIframeWin.global_dataHz.my_group.posy;
     var curID = 0,
         resMinX = 15,
         resMinY = 15,
@@ -1149,8 +1149,8 @@ function resVybor(resInCl) {
     };
 }
 function resProv(IdRes) {
-    var myGrPosX = actIframeWin.global_data.my_group.posx,
-        myGrPosY = actIframeWin.global_data.my_group.posy;
+    var myGrPosX = actIframeWin.global_dataHz.my_group.posx,
+        myGrPosY = actIframeWin.global_dataHz.my_group.posy;
     var resMinX = IdRes % 4000 - myGrPosX;
     var resMinY = (parseInt((IdRes + 4000) / 4000)) - myGrPosY;
 
@@ -1196,7 +1196,7 @@ function ChangeAutoNapr(resMinX, resMinY) {
     if (varToDo === 0) {
         alert("Я таких значений не знаю: resminx: " + resXStr + ", resminy: " + resYStr);
     } else {
-        var currDirection = +actIframeWin.global_data.my_group.napr;
+        var currDirection = +actIframeWin.global_dataHz.my_group.napr;
         // if (currDirection > 1){
         //     var deltanapr = currDirection - 1;
         //     varToDo -= deltanapr;
@@ -1230,7 +1230,7 @@ function SearchLog(obj) {
     // var obj = actIframeWin.datta.to_add_items;
     if (obj !== undefined) {
         var addItems = obj.to_add_items;
-        var imgBT = actIframeWin.img_by_type;
+        var imgBT = actIframeWin.img_by_typeHz;
         if (addItems !== undefined) {
             for (var j = 0; j < addItems.length; j++) {
                 var item = addItems[j];
@@ -1291,17 +1291,17 @@ function SearchLog(obj) {
 }
 
 function isInTheSea() {
-    var myPosY = actIframeWin.global_data.my_group.posy;
+    var myPosY = actIframeWin.global_dataHz.my_group.posy;
     if (myPosY > 3000) {
         return true;
     }
-    var myPosX = actIframeWin.global_data.my_group.posx;
+    var myPosX = actIframeWin.global_dataHz.my_group.posx;
     return myPosY > 2250 && myPosX > 4500;
 }
 
 // фича с присасыванием к чату и его обработка
-var ws = actIframeWin.Client;
-actIframeWin.Client.decode = function(e) {
+var ws = actIframeWin.ClientHz;
+actIframeWin.ClientHz.decode = function(e) {
     var str = JSON.parse(e);
     pars_log(str);
     return str;
@@ -1318,7 +1318,7 @@ var startKraft1TimeoutId = null,
 function startKraft1() {
     if (autoJob) {
         gasimov();
-        sendWSMessage("actNewMaps-StartDobycha=1", "startKraft1");
+        sendWSMessage("actNewMaps-StartDobycha=1", "startKraft1", ws.StartDobycha);
         popsearch = 0;
         totalsearch = 0;
         ChangeNapr = 0;
@@ -1366,7 +1366,7 @@ function fireClick(node){
 function startKraft3() {
     if (autoJob) {
         gasimov();
-        sendWSMessage("actNewMaps-StartDobycha=1", "startKraft3");
+        sendWSMessage("actNewMaps-StartDobycha=1", "startKraft3", ws.StartDobycha);
         setIntervalId = setInterval(check_capcha_val, 3000);
         console.log("CHECK CAPCHA FROM KRAFT 3")
     }
@@ -1379,7 +1379,7 @@ function startSearch() {
     if (autoSearch || CanSearch) {
         popsearch++;
         gasimov();
-        sendWSMessage("actNewMaps-StartSearch=1", "startSearch");
+        sendWSMessage("actNewMaps-StartSearch=1", "startSearch", ws.StartSearch);
     }
 
     clearTimeout(startSearchTimeoutId);
@@ -1399,7 +1399,7 @@ function changeDirection(direction) {
 function pars_log(str) {
     var t = "";
     var mgr = str.my_gr;
-    var imgBT = actIframeWin.img_by_type;
+    var imgBT = actIframeWin.img_by_typeHz;
     var group_id = +str.group_id,
         flags = +str.flags,
         wait_event = + str.wait_event,
@@ -1413,8 +1413,8 @@ function pars_log(str) {
         var resPosX = +str.item.posx;
         var resPosY = +str.item.posy;
         var type = +str.item.type;
-        var myGrPosX = actIframeWin.global_data.my_group.posx;
-        var myGrPosY = actIframeWin.global_data.my_group.posy;
+        var myGrPosX = actIframeWin.global_dataHz.my_group.posx;
+        var myGrPosY = actIframeWin.global_dataHz.my_group.posy;
         var deltaX = Math.abs(resPosX - myGrPosX);
         var deltaY = Math.abs(resPosY - myGrPosY);
         if (deltaX < 2 && deltaY < 2 && (type <= 75 || type >= 98)) {
@@ -1532,7 +1532,7 @@ function pars_log(str) {
             } else if (autoJob) {
                 if (toolUsageCount > 0) {
                     startKraft3TimeoutId = setTimeout(startKraft3, getRandomInt(1000, 10000, true));
-                    actIframeWin.OpenModal(TimeShiftTxt, 0);
+                    actIframeWin.OpenModalHz(TimeShiftTxt, 0);
                 } else {
                     var resourceType = getCurrResourceType();
                     if (resourceType !== null) {
@@ -1655,8 +1655,8 @@ function autoGoFunc(destinationX, destinationY) {
     var size = jQueryAct('#viewmode').val();
     var shagX = shag[size][0];
     var shagY = shag[size][1];
-    var myGroupX = +actIframeWin.global_data.my_group.posx;
-    var myGroupY = +actIframeWin.global_data.my_group.posy;
+    var myGroupX = +actIframeWin.global_dataHz.my_group.posx;
+    var myGroupY = +actIframeWin.global_dataHz.my_group.posy;
 
     var shagovX = Math.abs(destinationX - myGroupX) / shagX;
     var shagovY = Math.abs(destinationY - myGroupY) / shagY;
@@ -1752,7 +1752,7 @@ function showModalToAddPoints() {
 
     jQueryAct("#addPointsBtn").click(addPoints);
 
-    actIframeWin.OpenModal();
+    actIframeWin.OpenModalHz();
 }
 function showRoute() {
     var txt = 'Маршрут движения<br>';
@@ -1769,7 +1769,7 @@ function showRoute() {
 
     jQueryAct("#updatePointsBtn").click(updatePoints);
 
-    actIframeWin.OpenModal();
+    actIframeWin.OpenModalHz();
 }
 function addPoints() {
     parsePoints(actIframeDoc.getElementById("newCoorsList").value);
@@ -1850,6 +1850,6 @@ function erroraccess() {
     modalForm.innerHTML = 'Извините, у Вас нет разрешения на использование данного скрипта!<br>';
     modalForm.innerHTML += 'Для получения разрешения внесите ..... на счет....<br>';
     modalForm.innerHTML += 'Спасибо за понимание))';
-    actIframeWin.OpenModal();
+    actIframeWin.OpenModalHz();
 }
 }
