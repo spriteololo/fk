@@ -2,7 +2,7 @@
     if (top.frames["d_act"].global_data != undefined && top.frames["d_act"].global_data.my_group != undefined) {
         startNail()
     } else {
-        log.i("try to to init")
+        console.log("try to to init")
         setTimeout(initMod, 1000);
     }
 })()
