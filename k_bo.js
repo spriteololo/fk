@@ -6,7 +6,7 @@ console.log("Started")
 
 var alreadyStarted = false;
 function initMod(){
-    if (top.frames["d_act"].global_dataHz != undefined && top.frames["d_act"].global_dataHz.my_group != undefined) {
+    if (top.frames["d_act"].global_data != undefined && top.frames["d_act"].global_data.my_group != undefined) {
         if(localStorage.getItem("Start_script") == "true") {
             startScript();
         }
@@ -70,7 +70,7 @@ function stopBtnClicked() {
 }
 
 function startLoop() {
-    if(top.frames["d_act"].global_dataHz.my_group.sostav.leader.nick == "Божий одуванчик") {
+    if(top.frames["d_act"].global_data.my_group.sostav.leader.nick == "Божий одуванчик") {
         if(!isStarted){
             isStarted = true;
             intervalId = setInterval(looper, getRandom(1000, 2000));
@@ -520,9 +520,9 @@ function looper() {
 
 function CheckKeyDown(event){
     switch(event.keyCode){
-        case 37: ClientHz.sendHz('actNewMaps-ChangeNapr=0');
+        case 37: Client.send('actNewMaps-ChangeNapr=0');
         break;
-        case 39: ClientHz.sendHz('actNewMaps-ChangeNapr=1');
+        case 39: Client.send('actNewMaps-ChangeNapr=1');
         break;
     }
 }
@@ -687,9 +687,9 @@ function fixDirection(currentStoneId){
 
 function getMyPositionAndDirection() {
     return {
-            x: forest_frame.global_dataHz.my_group.posx,
-            y: forest_frame.global_dataHz.my_group.posy,
-            direction: forest_frame.global_dataHz.my_group.napr
+            x: forest_frame.global_data.my_group.posx,
+            y: forest_frame.global_data.my_group.posy,
+            direction: forest_frame.global_data.my_group.napr
     };
 }
 
@@ -805,14 +805,14 @@ function getLeftForwardAndRight(){
 }
 
 function getAllItemsInRadius(radius, stoneType) {
-    var allItemsOnTheScreen = forest_frame.global_dataHz.abs_poses
-    var allItemsOnTheScreenIndexes = forest_frame.global_dataHz.abs_poses_index
+    var allItemsOnTheScreen = forest_frame.global_data.abs_poses
+    var allItemsOnTheScreenIndexes = forest_frame.global_data.abs_poses_index
 
     var itemsInRadius = [];
 
     var currentPosition = {};
-    currentPosition.x = forest_frame.global_dataHz.my_group.posx
-    currentPosition.y = forest_frame.global_dataHz.my_group.posy
+    currentPosition.x = forest_frame.global_data.my_group.posx
+    currentPosition.y = forest_frame.global_data.my_group.posy
 
     for(var index = 0; index < allItemsOnTheScreenIndexes.length; index++) {
         var item = allItemsOnTheScreen[allItemsOnTheScreenIndexes[index]];
@@ -847,9 +847,9 @@ function getAllItemsInRadius(radius, stoneType) {
 
 function getStoneTypeById(id) {
     var typeNum = 0;
-    var len = forest_frame.global_dataHz.abs_poses_index.length;
+    var len = forest_frame.global_data.abs_poses_index.length;
             for (var i = 0; i < len; i++) {
-                var item = forest_frame.global_dataHz.abs_poses[forest_frame.global_dataHz.abs_poses_index[i]];
+                var item = forest_frame.global_data.abs_poses[forest_frame.global_data.abs_poses_index[i]];
                  	if(item !== undefined && item.id == id) {
             		typeNum = parseInt(item.type)
         		}
@@ -865,7 +865,7 @@ function getStoneTypeById(id) {
 
 function clickSearch() {
     hitCount++;
-    top.frames["d_act"].ClientHz.sendHz('actNewMaps-StartSearch=1')
+    top.frames["d_act"].Client.send('actNewMaps-StartSearch=1')
 }
 
 function isInPossibleListItems(id, stoneType) {
@@ -1051,11 +1051,11 @@ function goToTheNearestStone(stoneType, goTo5Possible) {
         }
     } else {
         currentPosition = {
-                x: forest_frame.global_dataHz.my_group.posx,
-                y: forest_frame.global_dataHz.my_group.posy}
+                x: forest_frame.global_data.my_group.posx,
+                y: forest_frame.global_data.my_group.posy}
 
-        var allItemsOnTheScreen = forest_frame.global_dataHz.abs_poses
-        var allItemsOnTheScreenIndexes = forest_frame.global_dataHz.abs_poses_index
+        var allItemsOnTheScreen = forest_frame.global_data.abs_poses
+        var allItemsOnTheScreenIndexes = forest_frame.global_data.abs_poses_index
         var stoneItems = [];
 
         var typedStoneIds = getAllItemsInRadius(13, stoneType)
@@ -1130,7 +1130,7 @@ function goToPosition(id) {
     var tempId = parseInt(id);
     if(Number.isInteger(tempId) && tempId != 0) {
         log.i("trying to go to " + tempId)
-        top.frames["d_act"].ClientHz.sendHz('actNewMaps-GotoKletka=' + tempId)
+        top.frames["d_act"].Client.send('actNewMaps-GotoKletka=' + tempId)
         return tempId;
     } else {
         log.e("cannot go to" + tempId)
@@ -1283,7 +1283,7 @@ top.frames["d_act"].changeNavTarget = function changeNavTarget(val) {
 function startShowCoordinates(){
 
     setInterval(function() {
-        byIdFr("d_pers", "perscords").innerHTML = "x-"+top.frames["d_act"].global_dataHz.my_group.posx+" y-"+top.frames["d_act"].global_dataHz.my_group.posy;
+        byIdFr("d_pers", "perscords").innerHTML = "x-"+top.frames["d_act"].global_data.my_group.posx+" y-"+top.frames["d_act"].global_data.my_group.posy;
     }, 1000)
 }
 //------------------------------------------------------------------NAV CONTROL END
@@ -1294,7 +1294,7 @@ function goTo(item) {
     if(item != null && item.hasOwnProperty("id") && item.id != 0) {
         if(getApprovanceById(item.id)) {
             log.i(item.id)
-            ClientHz.sendHz('actNewMaps-GotoKletka=' + item.id)
+            Client.send('actNewMaps-GotoKletka=' + item.id)
             return getAbs(getMyCurrentCellId(), item.id)
         }
         return 0;
@@ -1302,16 +1302,16 @@ function goTo(item) {
 }
 
 function getMyCurrentCellId() {
-    var x = global_dataHz.my_group.posx
-    var y = global_dataHz.my_group.posy
+    var x = global_data.my_group.posx
+    var y = global_data.my_group.posy
     if(!isNaN(x) && !isNaN(y)) {
         return (y-1)*4000 + x;
     }
 }
 
 function getApprovanceById(id) {
-    var x = global_dataHz.my_group.posx
-    var y = global_dataHz.my_group.posy
+    var x = global_data.my_group.posx
+    var y = global_data.my_group.posy
     if(!isNaN(x) && !isNaN(y)) {
         if(!isNaN(id)) {
             var result = getCoordinates(id);
@@ -1355,8 +1355,8 @@ function chooseDirection(x, y) {
     result = {}
     result.x = -1;
     result.y = -1;
-    var x_my = global_dataHz.my_group.posx
-    var y_my = global_dataHz.my_group.posy
+    var x_my = global_data.my_group.posx
+    var y_my = global_data.my_group.posy
 
     var dx = x_my - x
     var dy = y_my - y
@@ -1521,7 +1521,7 @@ function log2(prefix, str) {
 }
 
 function clickStartDig() {
-    top.frames["d_act"].ClientHz.sendHz('actNewMaps-StartDobycha=1')
+    top.frames["d_act"].Client.send('actNewMaps-StartDobycha=1')
 }
 
 var log = {
@@ -1543,8 +1543,8 @@ function getRandomInt(min, max) {
 
 //Returns timer value
 function getSecondsLeft() {
-    var secondsLeft = parseInt(forest_frame.global_dataHz.wait_time) -
-            (parseInt(forest_frame.global_dataHz.timestamp) + parseInt(Math.floor(new Date().getTime() / 1000)) - parseInt(forest_frame.Realtime))
+    var secondsLeft = parseInt(forest_frame.global_data.wait_time) -
+            (parseInt(forest_frame.global_data.timestamp) + parseInt(Math.floor(new Date().getTime() / 1000)) - parseInt(forest_frame.Realtime))
 
     if(secondsLeft >= 0) {
         return secondsLeft
@@ -1579,7 +1579,7 @@ var forest_f = top.frames["d_act"].document;
 var dotsArr = [];
 
 function createDot(id, text) {
-    var startCellId = forest_frame.global_dataHz.my_group.id - 48012;
+    var startCellId = forest_frame.global_data.my_group.id - 48012;
     var dx = (id - startCellId) % 4000;
     var dy = Math.abs(Math.floor((id - startCellId) / 4000));
 
